@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!-- Pattern Script JS library for implement OOP disign patterns in javascript -->
+<!-- By : K D Kasun Madusanka - kdk.madusanka@gmail.com -->
+<html>
+    <head>
+        <title>PS</title>
+        <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        
+        <script src="patternScript.js"></script>
+        <style type="text/css">
+            code {
+                color: green;
+                white-space: pre;
+                font-family: Consolas;
+            }
+            .well img {
+                max-height: 50vh;
+                max-width: 100%;
+            }
+            td:first-child {
+                font-weight: bold;
+                padding-right: 75px;
+                vertical-align: top;
+            }
+            tr + tr {
+                border-top: 1px solid #eee;
+            }
+        </style>
+    </head>
+    <body style="font-family:Times New Roman">
+        <div class="container">
+            
+            <fieldset>
+                <legend><h1>Pattern Script<br /><small>javaScript library for implement OOP disign patterns</small></h1></legend>
+            </fieldset>
+            
+            
+            <b>'Pattern Script'</b> is a javaScript library which can be used to implement well known OOP design patterns in javaScript.<br />
+            This is under namespace <b>'ps'</b>, so you can convert your class to any pattern implemented object/class by using <br />&nbsp;&nbsp;&nbsp;'<i>ps.&lt;pattern name&gt;</i>'<br />
+            <br/>
+            Continue reading for more information...
+            <hr/>
+            <h3><a name="contents"></a>Contents</h3>
+            <ul>
+                <li><a href="#creational-patterns">Creational Patterns</a>
+                    <ol>
+                        <li><a href="#singleton-pattern">Singleton</a></li>
+                    </ol>
+                </li>
+                <li><a href="#structural-patterns">Structural Patterns</a>
+                    <ol>
+                        
+                    </ol>
+                </li>
+                <li><a href="#behavioral-patterns">Behavioral Patterns</a>
+                    <ol>
+                        <li><a href="#observer-pattern">Observer</a><br/><a href="#pubsub-pattern">Publisher-Subscriber</a></li>
+                    </ol>
+                </li>
+            </ul>
+            <hr />
+            
+            
+            
+            <h2><a name="creational-patterns"></a>Creational Patterns</h2>
+            <hr/>
+            
+            <div class="well well-sm">
+                <h3><a name="singleton-pattern"></a>Singleton</h3>
+                <table>
+                    <tr><td>Method</td><td><code>Object ps.SingletonPattern(X);</code><br/>'X' may be JS class (function) or DOM object.</td></tr>
+                    <tr><td>Usage</td><td></td></tr>
+                </table>
+                <blockquote>
+                    <code>function Counter(){
+    var index = 0;
+    return {
+        increment : function(){
+            index++;
+        },
+        getIndex : function(){
+            return index;
+        }
+    };
+};
+Counter = ps.SingletonPattern(Counter);
+
+var x = Counter.getInstance();
+var y = Counter.getInstance();
+x.increment();
+console.log(x.getIndex());
+y.increment();
+console.log(y.getIndex());</code>
+                </blockquote>
+            </div>
+            
+            
+            
+            <h2><a name="structural-patterns"></a>Structural Patterns</h2>
+            <hr/>
+            
+            
+            
+            <h2><a name="behavioral-patterns"></a>Behavioral Patterns</h2>
+            <hr/>
+            
+            <div class="well well-sm">
+                <h3><a name="observer-pattern"></a>Observer</h3>
+                <blockquote>
+                    <code>function Teacher(){}
+Teacher = new ps.ObserverPattern.Subject(Teacher);
+function Student(){this.learningMetirial = 'some book';}
+Student = new ps.ObserverPattern.Observer(Student, function(teacherData){
+    this.learningMetirial = teacherData;
+});
+var someTeacher = new Teacher();
+var someStudent1 = new Student();
+var someStudent2 = new Student();
+someTeacher.addObserver(someStudent1);
+someTeacher.addObserver(someStudent2);
+
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);
+
+someTeacher.notify("book 1 given by teacher");
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);
+
+someTeacher.removeObserver(someStudent1);
+
+someTeacher.notify("book 2 given by teacher");
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);</code>
+                </blockquote>
+            </div>
+            
+            <div class="well well-sm">
+                <h3><a name="pubsub-pattern"></a>Publisher-Subscriber</h3>
+                <blockquote>
+                    <code>function Teacher(){}
+Teacher = new ps.PublisherSubscriberPattern.Publisher(Teacher);
+function Student(){this.learningMetirial = 'some book';}
+Student = new ps.PublisherSubscriberPattern.Subscriber(Student, function(teacherData){
+    this.learningMetirial = teacherData;
+});
+var someTeacher = new Teacher();
+var someStudent1 = new Student();
+var someStudent2 = new Student();
+someTeacher.subscribe(someStudent1, 'class1');
+someTeacher.subscribe(someStudent2, 'class2');
+
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);
+
+someTeacher.publish("book given by teacher to class 1", 'class1');
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);
+
+someTeacher.publish("book given by teacher to class 2", 'class2');
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);
+
+someTeacher.unsubscribe(someStudent1, 'class1');
+
+someTeacher.publish("another book to class 1", 'class1');
+console.log(someStudent1.learningMetirial);
+console.log(someStudent2.learningMetirial);</code>
+                </blockquote>
+            </div>
+            
+            
+        </div>
+    </body>
+<script>
+
+</script>
+</html>
