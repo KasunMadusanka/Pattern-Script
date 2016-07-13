@@ -5,7 +5,7 @@
 <head>
     <title>PS</title>
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-    <script src="patternScript.js"></script>
+    <script src="src/patternScript.js"></script>
 </head>
 <body>
     
@@ -16,10 +16,74 @@
     
 <script>
 
-    ///////////////////
-    // observer for DOM
-    ///////////////////
-    var obvInput = new ps.ObserverPattern.Subject($('#observer-input')[0]);
+    
+    
+    
+    
+            ////////////////////////////////////////////////////////////////////////////
+            //                               singleton                                //
+            ////////////////////////////////////////////////////////////////////////////
+    
+    function Counter(){
+        var index = 0;
+        return {
+            increment : function(){
+                index++;
+                return index;
+            }
+        };
+    };
+    Counter = ps.SingletonPattern(Counter);
+
+    var x = Counter.getInstance();
+    var y = Counter.getInstance();
+    console.log('increment form x: ' + x.increment());
+    console.log('increment form y: ' + y.increment());
+    console.log('increment form y: ' + y.increment());
+    console.log('increment form x: ' + x.increment());
+    
+    
+    
+            ////////////////////////////////////////////////////////////////////////////
+            //                                observer                                //
+            ////////////////////////////////////////////////////////////////////////////
+    
+    /*function Teacher(){}
+    Teacher = new ps.ObserverPattern.Subject(Teacher);
+
+    function Student(){ this.learningMetirial = 'some book'; }
+    Student = new ps.ObserverPattern.Observer(Student, function(teacherData){
+        this.learningMetirial = teacherData;
+    });
+
+    var someTeacher = new Teacher();
+    var someStudent1 = new Student();
+    var someStudent2 = new Student();
+    someTeacher.addObserver(someStudent1);
+    someTeacher.addObserver(someStudent2);
+
+    console.log('defaults');
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);
+
+    console.log('notify book 1');
+    someTeacher.notify("book 1 given by teacher");
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);
+
+    console.log('removing student 1 from observers and notify book 2');
+    someTeacher.removeObserver(someStudent1);
+    someTeacher.notify("book 2 given by teacher");
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);*/
+    
+    
+    
+            ////////////////////////////////////////////////////////////////////////////
+            //                            observer for DOM                            //
+            ////////////////////////////////////////////////////////////////////////////
+    
+    /*var obvInput = new ps.ObserverPattern.Subject($('#observer-input')[0]);
     function observerNotifyFunc (dataFromInput) {
         this.innerText = dataFromInput;
     }
@@ -29,110 +93,52 @@
     obvInput.addObserver(obvOutput2);
     obvInput.onkeyup = function () {
         this.notify(this.value);
-    };
+    };*/
     
     
-////////////
-// singleton
-////////////
-/*function Counter(){
-    var index = 0;
-    return {
-        increment : function(){
-            index++;
-            return index;
-        }
-    };
-};
-Counter = ps.SingletonPattern(Counter);
+    
+            ////////////////////////////////////////////////////////////////////////////
+            //                          publisher-subscriber                          //
+            ////////////////////////////////////////////////////////////////////////////
+    
+    /*function Teacher(){}
+    Teacher = new ps.PublisherSubscriberPattern.Publisher(Teacher);
 
-var x = Counter.getInstance();
-var y = Counter.getInstance();
-console.log('increment form x: ' + x.increment());
-console.log('increment form y: ' + y.increment());
-console.log('increment form y: ' + y.increment());
-console.log('increment form x: ' + x.increment());*/
+    function Student(){this.learningMetirial = 'some book';}
+    Student = new ps.PublisherSubscriberPattern.Subscriber(Student, function(teacherData){
+        this.learningMetirial = teacherData;
+    });
 
+    var someTeacher = new Teacher();
+    var someStudent1 = new Student();
+    var someStudent2 = new Student();
+    // subscribe student 1 to class 1
+    someTeacher.subscribe(someStudent1, 'class1');
+    // subscribe student 2 to class 2
+    someTeacher.subscribe(someStudent2, 'class2');
 
+    console.log('default books');
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);
 
-///////////
-// observer
-///////////
-function Teacher(){}
-Teacher = new ps.ObserverPattern.Subject(Teacher);
+    console.log('publish book 1 to class 1');
+    someTeacher.publish("book 1 given to class 1", 'class1');
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);
 
-function Student(){ this.learningMetirial = 'some book'; }
-Student = new ps.ObserverPattern.Observer(Student, function(teacherData){
-    this.learningMetirial = teacherData;
-});
+    console.log('publish book 2 to class 2');
+    someTeacher.publish("book 2 given to class 2", 'class2');
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);
 
-var someTeacher = new Teacher();
-var someStudent1 = new Student();
-var someStudent2 = new Student();
-someTeacher.addObserver(someStudent1);
-someTeacher.addObserver(someStudent2);
+    console.log('unsubscribe student 1 from class 1');
+    someTeacher.unsubscribe(someStudent1, 'class1');
 
-console.log('defaults');
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-console.log('notify book 1');
-someTeacher.notify("book 1 given by teacher");
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-console.log('removing student 1 from observers and notify book 2');
-someTeacher.removeObserver(someStudent1);
-someTeacher.notify("book 2 given by teacher");
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-
-
-
-
-
-///////////////////////
-// publisher-subscriber
-///////////////////////
-/*function Teacher(){}
-Teacher = new ps.PublisherSubscriberPattern.Publisher(Teacher);
-
-function Student(){this.learningMetirial = 'some book';}
-Student = new ps.PublisherSubscriberPattern.Subscriber(Student, function(teacherData){
-    this.learningMetirial = teacherData;
-});
-
-var someTeacher = new Teacher();
-var someStudent1 = new Student();
-var someStudent2 = new Student();
-// subscribe student 1 to class 1
-someTeacher.subscribe(someStudent1, 'class1');
-// subscribe student 2 to class 2
-someTeacher.subscribe(someStudent2, 'class2');
-
-console.log('default books');
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-console.log('publish book 1 to class 1');
-someTeacher.publish("book 1 given to class 1", 'class1');
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-console.log('publish book 2 to class 2');
-someTeacher.publish("book 2 given to class 2", 'class2');
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);
-
-console.log('unsubscribe student 1 from class 1');
-someTeacher.unsubscribe(someStudent1, 'class1');
-
-console.log('publish book 3 to class 1 and 2');
-someTeacher.publish("another book 3 to class 1", 'class1');
-someTeacher.publish("another book 3 to class 2", 'class2');
-console.log('Student 1: ' + someStudent1.learningMetirial);
-console.log('Student 2: ' + someStudent2.learningMetirial);*/
+    console.log('publish book 3 to class 1 and 2');
+    someTeacher.publish("another book 3 to class 1", 'class1');
+    someTeacher.publish("another book 3 to class 2", 'class2');
+    console.log('Student 1: ' + someStudent1.learningMetirial);
+    console.log('Student 2: ' + someStudent2.learningMetirial);*/
 
 
 </script>

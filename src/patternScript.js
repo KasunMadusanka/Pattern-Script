@@ -18,7 +18,7 @@ var ps = (function(){
             return {
                 getInstance : function() {
                     if(!instance){
-                        instance = Class();
+                        instance = new Class();
                     }
                     return instance;
                 }
